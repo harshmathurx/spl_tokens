@@ -15,30 +15,19 @@ import {
 (async () => {
     // Step 1: Connect to cluster and generate two new Keypairs
     const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
-    const symbol = "COOL";
+    const symbol = "BLB";
 
-    const fromWallet = Keypair.generate();
+    const fromWallet = Keypair.fromSecretKey(
+        bs58.decode(
+            "5MaiiCavjCmn9Hs1o3eznqDEhRwxo7pXiAYez7keQUviUkauRiTMD8DrESdrNjN8zd9mTmVhRvBJeg5vhyvgrAhG"
+        )
+    );
     console.log(fromWallet.publicKey.toBase58());
     console.log(fromWallet.secretKey);
-    //GENARATE THE TO WALLET USING THE SOLANA WALLET GENERATOR USING PublicKey
 
     const toWallet = Keypair.generate();
     console.log(toWallet.publicKey.toBase58());
     console.log(toWallet.secretKey);
-    
-    //const toWallet = new PublicKey("24PNhTaNtomHhoy3fTRaMhAFCRj4uHqhZEEoWrKDbR5p").toBase58();
-    //const toWalletsecond = new PublicKey("2n6rwsFfpKs9NZpfEUoYWJ1j1ZzckTqQ1Uqs3kqVPmtd");
-
-    /// Step 2: Airdrop SOL into your from wallet
-    const fromAirdropSignature = await connection.requestAirdrop(
-        fromWallet.publicKey,
-        LAMPORTS_PER_SOL
-    );
-    
-    // Wait for airdrop confirmation
-    await connection.confirmTransaction(fromAirdropSignature, {
-        commitment: "confirmed",
-    });
 
     // Step 3: Create new token mint and get the token account of the fromWallet address
     //If the token account does not exist, create it
